@@ -1,0 +1,13 @@
+Package: victor
+Title: Work With Mapbox Vector Tiles In R
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Adam",
+           family = "Gruer",
+           role = c("aut", "cre"),
+           email = "adamgruer@icloud.com")
+Description: Import data from the Mapbox Vector Tile API and convert
+  to simple features.  Plot static maps using layers you find useful.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
