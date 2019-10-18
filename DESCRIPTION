@@ -11,3 +11,8 @@ Description: Import data from the Mapbox Vector Tile API and convert
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    protolite (>= 2.0),
+    httr,
+    utils,
+    glue
