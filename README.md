@@ -7,9 +7,22 @@
 
 <!-- badges: end -->
 
-The goal of victor is to interact with the Mapbox Vector tile API in R.
-Grab a vector tile, work with it using the simple features package sf.
-Plot static maps with ggplot2, tmap, etc.
+The goal of victor is to interact with the [Mapbox Vector Tile
+API](https://docs.mapbox.com/help/glossary/vector-tiles-api/) in R. Grab
+a vector tile, work with it using the simple features package sf. Plot
+static maps with ggplot2, tmap, etc.
+
+A [Mapbox Access Token](link%20here) is required to access the API. See
+these instructions … link to mapdeck instructions?
+
+Inspired and fuelled by:
+
+  - mapdeck
+  - protolite
+  - ceramic
+  - slippymath
+  - rmapzen
+  - sf
 
 ## Installation
 
