@@ -8,8 +8,9 @@
 <!-- badges: end -->
 
 The goal of victor is to interact with the [Mapbox Vector Tile
-API](https://docs.mapbox.com/help/glossary/vector-tiles-api/) in R. Grab
-a vector tile, work with it using the simple features package sf. Plot
+API](https://docs.mapbox.com/help/glossary/vector-tiles-api/) ( [also
+here](https://docs.mapbox.com/api/maps/#vector-tiles) ) in R. Grab a
+vector tile, work with it using the simple features package sf. Plot
 static maps with ggplot2, tmap, etc.
 
 A [Mapbox Access Token](link%20here) is required to access the API. See
