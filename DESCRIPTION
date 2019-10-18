@@ -15,4 +15,4 @@ Imports:
     protolite (>= 2.0),
     httr,
     utils,
-    glue
+    glue,
