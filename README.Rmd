@@ -14,8 +14,6 @@ knitr::opts_chunk$set(
 ```
 # victor
 
-
-
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
@@ -50,12 +48,14 @@ devtools::install_github("adam-gruer/victor")
 
 Let's create a map of Melburn and surrounding cities:
 
-```{r example, message=FALSE, warning=FALSE}
+Use the spoils function to retrieve a tile for a given location and zoom
+It returns a list of simple features data frames.  One for each layer of data provided by mapbox.
+<!-- To view a summary of available layers , call summary(). -->
+
+```{r, message=FALSE, warning=FALSE}
 library(victor)
 library(sf)
 library(tidyverse)
-
-
 melburn <- spoils(zoom = 7, longitude = 144.8430, latitude = -37.7311)
 
 roads <- filter(melburn$road,!st_is(geometry, "POINT")) 
@@ -64,12 +64,15 @@ road_shields <-  filter(melburn$road,
                         str_starts(ref, "M") ) %>% 
                   group_by(ref) %>% 
                   filter(row_number() == 1)
-places <- filter(melburn$place_label, symbolrank < 11)
+places <- filter(melburn$place_label, symbolrank < 11) %>% 
+  mutate(name = case_when(name == "Melbourne" ~ "Melburn",
+                          TRUE ~ as.character(name)))
 
 ggplot() +
   geom_sf(data = melburn$water, fill = "lightblue") +
-  geom_sf_label(aes(label = ref), data = road_shields) +
   geom_sf(aes(colour = class), data = roads) +
+  geom_sf_label(aes(label = ref), data = road_shields) +
+  
   geom_sf_label(aes(label = name, size = symbolrank),
                 data = places) +
   scale_size(trans = "reverse", range = c(4,6)) +
@@ -77,5 +80,6 @@ ggplot() +
   theme( panel.grid.major = element_line(size = 0),
          plot.background = element_rect(fill = "antiquewhite"),
          legend.position = "none") 
+
 ```
 
