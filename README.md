@@ -40,12 +40,15 @@ devtools::install_github("adam-gruer/victor")
 
 Let’s create a map of Melburn and surrounding cities:
 
+Use the spoils function to retrieve a tile for a given location and zoom
+It returns a list of simple features data frames. One for each layer of
+data provided by mapbox.
+<!-- To view a summary of available layers , call summary(). -->
+
 ``` r
 library(victor)
 library(sf)
 library(tidyverse)
-
-
 melburn <- spoils(zoom = 7, longitude = 144.8430, latitude = -37.7311)
 
 roads <- filter(melburn$road,!st_is(geometry, "POINT")) 
@@ -54,12 +57,15 @@ road_shields <-  filter(melburn$road,
                         str_starts(ref, "M") ) %>% 
                   group_by(ref) %>% 
                   filter(row_number() == 1)
-places <- filter(melburn$place_label, symbolrank < 11)
+places <- filter(melburn$place_label, symbolrank < 11) %>% 
+  mutate(name = case_when(name == "Melbourne" ~ "Melburn",
+                          TRUE ~ as.character(name)))
 
 ggplot() +
   geom_sf(data = melburn$water, fill = "lightblue") +
-  geom_sf_label(aes(label = ref), data = road_shields) +
   geom_sf(aes(colour = class), data = roads) +
+  geom_sf_label(aes(label = ref), data = road_shields) +
+  
   geom_sf_label(aes(label = name, size = symbolrank),
                 data = places) +
   scale_size(trans = "reverse", range = c(4,6)) +
@@ -69,4 +75,4 @@ ggplot() +
          legend.position = "none") 
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
