@@ -20,6 +20,17 @@ library(tidyverse)
 library(sf)
 ```
 
+## Mapbox Token
+
+You will need a [Mapbox Access Token](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/) to use their API.
+Once you have a token add a line to your .Renviron file
+```
+MAPBOX_API_KEY=your_acess_token
+```
+The easiest way to edit .Renviron is with the usethis pavkage `usethis::edit_r_environ()`.  You will have to restart R after editing the file for the token to be available.
+
+## Get some tiles and plot
+
 Use the spoils function to retrieve a tile for a given location and zoom
 It returns a list of simple features data frames.  One for each layer of data provided by mapbox.  
 <!-- To view a summary of available layers , call summary(). -->
