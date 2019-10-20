@@ -52,3 +52,26 @@ ggplot() +
 
 ```
 
+
+Melburn CBD , zoomed in
+
+```{r, message=FALSE, warning=FALSE}
+
+cbd <- spoils(zoom = 15, long = 144.958869, lat =-37.820318)
+
+ggplot() + geom_sf(data = cbd$water, fill = "lightblue") +
+  geom_sf(data = cbd$building, aes(fill = type )) +
+  geom_sf(data = cbd$road) +
+  geom_sf_label(data = cbd$natural_label,
+                aes (label = name),
+                alpha = 0.4,
+                nudge_x = 0.002) +
+  geom_sf_label(data = filter(cbd$poi_label, 
+                              category_en == "Aquarium"), 
+                aes(label = name),
+                alpha = 0.4) + 
+    theme_void() +
+  theme( panel.grid.major = element_line(size = 0),
+         plot.background = element_rect(fill = "antiquewhite1")) 
+```
+
