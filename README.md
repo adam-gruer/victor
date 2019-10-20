@@ -12,20 +12,17 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The goal of victor is to interact with the [Mapbox Vector Tile
 API](https://docs.mapbox.com/help/glossary/vector-tiles-api/) ( [also
 here](https://docs.mapbox.com/api/maps/#vector-tiles) ) in R. Grab a
-vector tile, work with it using the simple features package sf. Plot
+vector tile(s), work with it using the simple features package sf. Plot
 static maps with ggplot2, tmap, etc.
 
-A [Mapbox Access Token](link%20here) is required to access the API. See
-these instructions … link to mapdeck instructions?
+Inspired and/or fuelled by:
 
-Inspired and fuelled by:
-
-  - mapdeck
-  - protolite
-  - ceramic
-  - slippymath
-  - rmapzen
-  - sf
+  - [protolite](https://github.com/jeroen/protolite)
+  - [slippymath](https://github.com/MilesMcBain/slippymath)
+  - [ceramic](https://github.com/hypertidy/ceramic)
+  - [mapdeck](https://github.com/SymbolixAU/mapdeck)
+  - [rmapzen](https://github.com/tarakc02/rmapzen)
+  - [sf](https://github.com/r-spatial/sf)
 
 ## Installation
 
@@ -35,6 +32,18 @@ Install the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("adam-gruer/victor")
 ```
+
+## Mapbox Token
+
+You will need a [Mapbox Access
+Token](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/) to
+use their API. Once you have a token add a line to your .Renviron file
+
+    MAPBOX_API_KEY=your_acess_token
+
+The easiest way to edit .Renviron is with the usethis pavkage
+`usethis::edit_r_environ()`. You will have to restart R after editing
+the file for the token to be available.
 
 ## Example
 
