@@ -1,14 +1,35 @@
+library(tidyverse)
+library(sf)
+library(slippymath)
+
 #new zealand zoom 4 ------- features crossing anti-meridian (+180,-180)
 
 slippymath::lonlat_to_tilenum(172.078171,-42.576470, 4)
 
-nz <- victor:::mapbox_api(zoom = 4, x = 15, y = 10)
-nz <- protolite::read_mvt_sf(nz$content, zxy = c(4, 15, 10))
-x <- st_bbox(nz$water)[c("xmin", "xmax")]
-xmin <- x["xmin"]
-xmax <- x["xmax"]
-sign(xmin) == sign(xmax)
+nz <- victor:::mapbox_api(zoom = 4, x = 0, y = 8)
+nz <- protolite::read_mvt_sf(nz$content, zxy = c(4, 0, 8))
 
+water <- nz$water
+ggplot() + geom_sf(data = water)
+water <- victor:::lon_wrap_180(water)
+ggplot() + geom_sf(data = water)
+
+# test
+st_bbox(water)[c("xmin", "xmax")]
+t_bbox <- slippymath::tile_bbox(0,10,4)
+t_bbox <- matrix(t_bbox, nrow = 2, byrow = TRUE)
+t_bbox <- merc_to_lonlat(t_bbox)
+any(round(t_bbox[,1],10) %in% c(180.0, -180.0))
+
+tile_bbox <- function(zoom) {
+  t_bbox <- slippymath::tile_bbox(0,10,4)
+  t_bbox <- matrix(t_bbox, nrow = 2, byrow = TRUE)
+  t_bbox <- merc_to_lonlat(t_bbox)
+}
+
+
+t_bbox[,1] == c(-180.0, -157.5)
+c(180.0, 157) %in% c(180.0, -180.0)
 
 #stitching----------
 
