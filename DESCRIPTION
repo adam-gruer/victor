@@ -16,7 +16,8 @@ Imports:
     httr,
     utils,
     glue,
-    slippymath (>= 0.2.0)
+    slippymath (>= 0.2.0),
+    lwgeom
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
