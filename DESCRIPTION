@@ -23,5 +23,6 @@ Suggests:
     knitr,
     rmarkdown,
     sf,
-    tidyverse
+    tidyverse,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr
