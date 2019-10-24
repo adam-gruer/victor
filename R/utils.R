@@ -44,19 +44,19 @@ east_most_tile_x <- function(zoom){
 
 }
 
-is_east_most_tile <- function(tile, zoom){
-  if(zoom == 1) return(FALSE)
-  tile$x == east_most_tile_x(zoom)
+is_east_most_tile <- function(tilenum){
+  if(tilenum$zoom == 1) return(FALSE)
+  tilenum$x == east_most_tile_x(tilenum$zoom)
 }
 
-is_west_most_tile <- function(tile, zoom){
-  if(zoom == 1) return(FALSE)
-  tile$x == 0
+is_west_most_tile <- function(tilenum){
+  if(tilenum$zoom == 1) return(FALSE)
+  tilenum$x == 0
 }
 
-is_anti_meridian_tile <- function(tile,  zoom){
-  is_west_most_tile(tile, zoom) ||
-      is_east_most_tile(tile, zoom)
+is_anti_meridian_tile <- function(tilenum){
+  is_west_most_tile(tilenum) ||
+      is_east_most_tile(tilenum)
 }
 
 
