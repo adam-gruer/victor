@@ -31,8 +31,17 @@ spoils <- function(tileset_id = "mapbox.mapbox-streets-v8",
   # TODO convert long and lat in non degrees to degrees st_transform?
   tilenum <- slippymath::lonlat_to_tilenum(longitude, latitude, zoom)
   tilenum$zoom <- zoom
+
   vector_tile <- mapbox_api(tileset_id, tilenum)$content
-  protolite::read_mvt_sf(vector_tile, crs = crs, unlist(tilenum))
+  vector_tile <- protolite::read_mvt_sf(vector_tile,
+                                                   crs = crs,
+                                                   unlist(tilenum))
+
+  if(is_anti_meridian_tile(tilenum)){
+    purrr::map(vector_tile, lon_wrap_180)
+  } else {
+    vector_tile
+  }
 }
 
 
