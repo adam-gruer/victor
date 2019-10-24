@@ -36,9 +36,9 @@ lon_wrap_180 <- function(sf) {
 #' @examples
 east_most_tile_x <- function(zoom){
   if(any(
-         !is.integer(zoom),
+         !is.numeric(zoom),
          !zoom %in% 1:18)
-         ) abort("incorrect zoom must be integer between 1 and 18 inclusive")
+         ) abort("incorrect zoom must be a whole number between 1 and 18 inclusive")
 
   (2^zoom) - 1
 
