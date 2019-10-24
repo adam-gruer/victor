@@ -2,3 +2,4 @@
 
 export(spoils)
 export(tile_grid)
+importFrom(rlang,abort)
