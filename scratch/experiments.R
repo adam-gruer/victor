@@ -21,6 +21,121 @@ ggplot(rbind(nz_nth$water %>% lon_wrap_180(),
            nz_sth$water %>% lon_wrap_180())) +
   geom_sf()
 
+nz <- list(nz_nth, nz_sth)
+ ggplot() +
+   geom_sf(data = reduce(map(nz,"admin")  %>% map(lon_wrap_180), rbind)) +
+   geom_sf(data = reduce(map(nz,"water") %>% map(lon_wrap_180), rbind))  +
+   geom_sf(data = reduce(map(nz,"place_label") %>% map(lon_wrap_180), rbind))
+
+
+stitched <- stitch(nz)
+
+auckland <- list(longitude = 174.859085, latitude = -36.678057 )
+christchurch <- list(longitude = 172.639503, latitude = -43.537598)
+
+auckland_tile <- slippymath::lonlat_to_tilenum(auckland$longitude,
+                                               auckland$latitude,
+                                               zoom = 4)
+auckland_tile[["zoom"]] <- 4
+unlist(auckland_tile)
+
+christchurch_tile <- slippymath::lonlat_to_tilenum(christchurch$longitude,
+                                               christchurch$latitude,
+                                               zoom = 4)
+christchurch_tile[["zoom"]] <- 4
+unlist(christchurch_tile)
+
+is_anti_meridian_tile(auckland_tile)
+is_anti_meridian_tile(christchurch_tile)
+
+nth <- mapbox_api(tilenum = auckland_tile)
+sth <- mapbox_api(tilenum =christchurch_tile)
+unlist(auckland_tile)
+nth <- protolite::read_mvt_sf(nth$content, zxy = c(4, 15, 9))
+sth <- protolite::read_mvt_sf (sth$content, zxy = c(4, 15, 10))
+
+plot(rbind((nth$water), (sth$water)))
+plot(rbind(lon_wrap_180(sth$water), lon_wrap_180(nth$water)))
+
+nth <- if(is_anti_meridian_tile(list(zoom =4, x = 15,y = 9))){
+  purrr::map(nth, lon_wrap_180)
+} else {
+  nth
+}
+identical(nth, nz_nth)
+nth$water
+nz_nth$water
+
+plot(nth$water)
+
+sth <- if(is_anti_meridian_tile(list(zoom =4, x = 15,y = 10))){
+  purrr::map(sth, lon_wrap_180)
+} else {
+  sth
+}
+
+plot(sth$water)
+
+plot(rbind(nth$water, sth$water))
+
+reduce(list(nth, sth), function(a,b){
+  rbind(a[["water"]], b[["water"]])
+}) %>% plot()
+
+
+
+
+
+nz_nth <- spoils(zoom = 4,
+                 longitude = auckland$longitude,
+                 latitude = auckland$latitude )
+
+nz_sth <- spoils(zoom = 4,
+                 longitude = christchurch$longitude,
+                 latitude = christchurch$latitude )
+nz <- stitch(list(nz_nth, nz_sth))
+
+ggplot() +
+  geom_sf(data = nz$admin)
+
+plot(rbind(nz_nth$water, nz_sth$water))
+plot(nz$water)
+
+ggplot() +
+
+  geom_sf(data = nz_sth$water)
+
+map(nz, tile_layers)
+water <-  reduce(map(nz,"water") %>% map(lon_wrap_180), rbind)
+place_label <- reduce(map(nz,"place_label") %>% map(lon_wrap_180) , rbind)
+
+ ggplot() +
+   geom_sf(data = water) +
+   geom_sf(data = place_label)
+
+ nz_place_label <- place_label %>%
+   st_join(st_bbox(water) %>% st_as_sfc() %>% st_sf(), join = st_intersects, left = FALSE)
+not_nz_place_label <- place_label %>%
+  st_join(st_bbox(water) %>% st_as_sfc() %>% st_sf(), join = st_disjoint, left = FALSE)
+
+ggplot() +
+  geom_sf(data = water) +
+  geom_sf(data = st_bbox(water) %>% st_as_sfc() %>% st_sf(), fill = NA,
+          colour = "purple") +
+  geom_sf(data = nz_place_label, colour = "green") +
+  geom_sf(data = not_nz_place_label, colour = "red")
+
+water_bbox_sf <- st_bbox(water) %>% st_as_sfc() %>% st_sf()
+water_2 <- st_difference(water, water_bbox_sf )
+ggplot() +
+  geom_sf(data = water_2, colour = "yellow") +
+  geom_sf(data = water_bbox_sf , fill = NA,
+          colour = "purple") +
+  geom_sf(data = nz_place_label, colour = "green") +
+  geom_sf(data = not_nz_place_label, colour = "red")
+
+water_2
+
 tilenum <- list(zoom = 4, x = 14, y = 9)
 au_se <- victor:::mapbox_api(tilenum = tilenum)
 au_se <- protolite::read_mvt_sf(au_se$content, zxy = unlist(tilenum))
@@ -52,8 +167,8 @@ ggplot(rbind(au_ne$water, au_tas$water)) +
 
 ggplot(rbind(au_ne$water,
              au_tas$water,
-             lon_wrap_180(nz_nth$water),
-             lon_wrap_180(nz_sth$water),
+             (nz_nth$water),
+             (nz_sth$water),
              lon_wrap_180(pac_1$water),
              lon_wrap_180(pac_2$water))) +
   geom_sf()
