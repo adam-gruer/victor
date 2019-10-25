@@ -1,7 +1,22 @@
 
 
 stitch <- function(tiles){
-  purrr::map(tiles, names_df)
+  layer_names <- purrr::reduce(tiles, intersect_tile_layers)
+  #names(layer_names) <- layer_names
+
+ layers <- map(layer_names, function(layer_name){
+
+   reduce(tiles, function(tile_a, tile_b){
+     rbind(tile_a[[layer_name]], tile_b[[layer_name]])
+   })
+
+  })
+ names(layers) <- layer_names
+ layers
+
+
+
+ # fields <-  purrr::map_chr(tiles,layer_fields, layers = layers)
   # t_tiles <- transpose(tiles)
   # layers <- map(t_tiles, function(layer){
   #     nms <- map(layer, names)
@@ -27,9 +42,15 @@ stitch <- function(tiles){
   # layers
 }
 
-layers <- function(tile_df) {
-  names(tile_df)
+intersect_tile_layers <- function(tile_a, tile_b) {
+  intersect(names(tile_a), names(tile_b))
 }
 
+layer_fields <- function(tile, layers) {
+
+  map2_chr(layers, function(layer,tile ){
+
+  }, tile = tile)
+}
 
 
