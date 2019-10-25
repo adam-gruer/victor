@@ -1,15 +1,7 @@
 
 
-stitch <- function(zoom, x, y, crs){
-    Map(function(zoom, x, y, crs){
-      mvt_request <- mapbox_api(zoom = zoom, x = x, y = y)
-  protolite::read_mvt_sf(mvt_request$content, crs, c(zoom, x, y))
-},  zoom ,
-      x ,
-      y ,
-      crs
-  )
-
+stitch <- function(tiles){
+  purrr::map(tiles, names_df)
   # t_tiles <- transpose(tiles)
   # layers <- map(t_tiles, function(layer){
   #     nms <- map(layer, names)
@@ -35,7 +27,9 @@ stitch <- function(zoom, x, y, crs){
   # layers
 }
 
-
+layers <- function(tile_df) {
+  names(tile_df)
+}
 
 
 
