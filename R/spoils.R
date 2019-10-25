@@ -35,7 +35,9 @@ spoils <- function(tileset_id = "mapbox.mapbox-streets-v8",
   vector_tile <- mapbox_api(tileset_id, tilenum)$content
   vector_tile <- protolite::read_mvt_sf(vector_tile,
                                                    crs = crs,
-                                                   unlist(tilenum))
+                                                   zxy = c(tilenum$zoom,
+                                                         tilenum$x,
+                                                         tilenum$y))
 
   if(is_anti_meridian_tile(tilenum)){
     purrr::map(vector_tile, lon_wrap_180)
