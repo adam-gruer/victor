@@ -5,12 +5,63 @@ library(slippymath)
 #new zealand zoom 4 ------- features crossing anti-meridian (+180,-180)
 
 slippymath::lonlat_to_tilenum(172.078171,-42.576470, 4)
+world <- victor::mapbox_api()
+nz_sth <- victor:::mapbox_api(tilenum = list(zoom = 4, x = 15, y = 10))
+nz_sth <- protolite::read_mvt_sf(nz_sth$content, zxy = c(4, 15, 10))
+ggplot(nz_sth$water) + geom_sf()
+ggplot(nz_sth$water %>% lon_wrap_180()) + geom_sf()
 
-nz <- victor:::mapbox_api(zoom = 4, x = 14, y = 9)
-nz <- protolite::read_mvt_sf(nz$content, zxy = c(4, 0, 9))
+nz_nth <- victor:::mapbox_api(tilenum = list(zoom = 4, x = 15, y = 9))
+nz_nth <- protolite::read_mvt_sf(nz_nth$content, zxy = c(4, 15, 9))
+ggplot(nz_nth$water) + geom_sf()
 
-water <- nz$water
-water
+ggplot(nz_nth$water %>% lon_wrap_180()) + geom_sf()
+
+ggplot(rbind(nz_nth$water %>% lon_wrap_180(),
+           nz_sth$water %>% lon_wrap_180())) +
+  geom_sf()
+
+tilenum <- list(zoom = 4, x = 14, y = 9)
+au_se <- victor:::mapbox_api(tilenum = tilenum)
+au_se <- protolite::read_mvt_sf(au_se$content, zxy = unlist(tilenum))
+ggplot(au_se$water) + geom_sf()
+ggplot(au_se$water %>% lon_wrap_180()) + geom_sf()
+
+tilenum <- list(zoom = 4, x = 14, y = 10)
+au_tas <- victor:::mapbox_api(tilenum = tilenum)
+au_tas <- protolite::read_mvt_sf(au_tas$content, zxy = unlist(tilenum))
+ggplot(au_tas$water) + geom_sf()
+
+ggplot(rbind(au_ne$water, au_tas$water)) +
+  geom_sf()
+
+tilenum <- list(zoom = 4, x = 0, y = 9)
+pac_1 <- victor:::mapbox_api(tilenum = tilenum)
+pac_1 <- protolite::read_mvt_sf(pac_1$content, zxy = unlist(tilenum))
+ggplot(pac_1$water) + geom_sf()
+ggplot(pac_1$water %>% lon_wrap_180()) + geom_sf()
+
+tilenum <- list(zoom = 4, x = 0, y = 10)
+pac_2 <- victor:::mapbox_api(tilenum = tilenum)
+pac_2 <- protolite::read_mvt_sf(pac_2$content, zxy = unlist(tilenum))
+ggplot(pac_2$water) + geom_sf()
+ggplot(pac_2$water %>% lon_wrap_180()) + geom_sf()
+
+ggplot(rbind(au_ne$water, au_tas$water)) +
+  geom_sf()
+
+ggplot(rbind(au_ne$water,
+             au_tas$water,
+             lon_wrap_180(nz_nth$water),
+             lon_wrap_180(nz_sth$water),
+             lon_wrap_180(pac_1$water),
+             lon_wrap_180(pac_2$water))) +
+  geom_sf()
+
+slippymath::lonlat_to_tilenum(172.078171,-42.576470, 4)
+
+nz_1 <- spoils(zoom = 4, longitude = 172.078171 , latitude = -42.576470 )
+ggplot(nz_1$water) + geom_sf()
 
 t2 <-  lwgeom::st_transform_proj(water,"+proj=longlat +datum=WGS84 +lon_wrap=180" ) %>%
   lwgeom::st_transform_proj(4326)
