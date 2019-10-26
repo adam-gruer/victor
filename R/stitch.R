@@ -1,16 +1,14 @@
 
 
 stitch <- function(tiles){
-  layer_names <- purrr::reduce(tiles, intersect_tile_layers)
-  #names(layer_names) <- layer_names
+  layer_names <- union_tile_layers(tiles)
 
- layers <- map(layer_names, function(layer_name){
+ layers <- purrr::map(layer_names, function(layer_name){
 
-   reduce(tiles, function(tile_a, tile_b){
-     rbind(tile_a[[layer_name]], tile_b[[layer_name]])
-   })
+   purrr::map(tiles, layer_name) %>%
+     purrr::reduce(rbind)
 
-  })
+    })
  names(layers) <- layer_names
  layers
 
@@ -42,8 +40,9 @@ stitch <- function(tiles){
   # layers
 }
 
-intersect_tile_layers <- function(tile_a, tile_b) {
-  intersect(names(tile_a), names(tile_b))
+union_tile_layers <- function(tiles) {
+  purrr::map(tiles, names) %>%
+    purrr::reduce(function(names_a,names_b) union(names_a,names_b))
 }
 
 layer_fields <- function(tile, layers) {
