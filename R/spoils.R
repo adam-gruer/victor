@@ -23,11 +23,11 @@
 #' \dontrun{
 #'     spoils()
 #'  }
-spoils <- function(tileset_id = "mapbox.mapbox-streets-v8",
-                   zoom = 1,
-                   longitude = 0,
+spoils <- function(longitude = 0,
                    latitude = 0,
-                   crs = 4326) {
+                   zoom = 1,
+                   crs = 4326,
+                   tileset_id = "mapbox.mapbox-streets-v8") {
   # TODO convert long and lat in non degrees to degrees st_transform?
   tilenum <- slippymath::lonlat_to_tilenum(longitude, latitude, zoom)
   tilenum$zoom <- zoom
