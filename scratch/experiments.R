@@ -96,7 +96,55 @@ nz_sth <- spoils(zoom = 4,
 nz <- stitch(list(nz_nth, nz_sth))
 
 ggplot() +
-  geom_sf(data = nz$admin)
+  geom_sf(data = nz$water)
+sydeny <- list(longitude = 151.131706,latitude = -33.805967)
+aus_se <- spoils(zoom = 4, longitude = sydeny$longitude, latitude = sydeny$latitude)
+
+hobart <-  list(longitude = 147.402534,latitude = -42.789102)
+aus_sth <- spoils(zoom = 4, longitude = hobart$longitude, latitude = hobart$latitude)
+
+perth <-  list(longitude = 115.906105,latitude = -31.842274)
+aus_west <- spoils(zoom = 4, longitude = perth$longitude, latitude = perth$latitude)
+
+darwin <- list(longitude = 130.608215,latitude = -12.252115)
+aus_north <- spoils(zoom = 4, longitude = darwin$longitude, latitude = darwin$latitude)
+
+cairns <- list(longitude = 145.849342,latitude = -16.700984)
+aus_ne <- spoils(zoom = 4, longitude = cairns$longitude, latitude = cairns$latitude)
+
+noumea <- list(longitude = 166.064873,latitude = -21.667958)
+sth_pac <- spoils(zoom = 4, longitude = noumea$longitude, latitude = noumea$latitude)
+
+ocean_spt <- list(longitude = 121.811943,latitude = -47.215604)
+sth_ocean <- spoils(zoom = 4, longitude = ocean_spt$longitude, latitude = ocean_spt$latitude)
+
+121.811943,-47.215604
+ggplot() + geom_sf(data =aus_se$water)
+
+
+oceania <- stitch(list(aus_se,
+                         aus_north,
+                         aus_sth,
+                         aus_west,
+                         aus_ne,
+                         nz_nth,
+                         nz_sth,
+                       sth_pac,
+                       sth_ocean))
+
+
+theme_vapour <-   theme_void() +
+  theme( panel.grid.major = element_line(size = 0),
+         plot.background = element_rect(fill = "#9239F6"),
+         legend.position = "none")
+
+ggplot() +
+  geom_sf(data =oceania$water, fill = "#FF0076", colour = NA) +
+  theme_vapour
+
+ggplot() + geom_sf(data =au_nz$natural_label)
+map(list(aus_se, nz_nth, nz_sth), names) %>%
+  reduce(function(a,b) union(a,b))
 
 plot(rbind(nz_nth$water, nz_sth$water))
 plot(nz$water)
