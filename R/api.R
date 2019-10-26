@@ -1,8 +1,8 @@
 
 mapbox_api <- function(tileset_id = "mapbox.mapbox-streets-v8",
-                       zoom = 1,
+                       tilenum = list(zoom = 1,
                        x = 0,
-                       y = 0) {
+                       y = 0)) {
   # TODO 2X and style parameters /v4/{tileset_id}/{zoom}/{x}/{y}{@2x}.{format}
   # https://docs.mapbox.com/api/maps/#vector-tiles
 
@@ -12,11 +12,11 @@ mapbox_api <- function(tileset_id = "mapbox.mapbox-streets-v8",
   mapbox_access_token <- Sys.getenv("MAPBOX_API_KEY")
 
   api_version <- "v4"
-  y <- glue::glue(y, ".mvt")
+  y.mvt <- glue::glue(tilenum$y, ".mvt")
   query_str <- glue::glue("access_token={mapbox_access_token}")
 
   url <- httr::modify_url("https://api.mapbox.com",
-    path = c(api_version, tileset_id, zoom, x, y),
+    path = c(api_version, tileset_id, tilenum$zoom, tilenum$x, y.mvt),
     query = query_str
   )
 
@@ -43,7 +43,7 @@ mapbox_api <- function(tileset_id = "mapbox.mapbox-streets-v8",
   structure(
     list(
       content = httr::content(resp),
-      path = glue::glue(tileset_id, zoom, x, y),
+      path = glue::glue(tileset_id, tilenum$zoom, tilenum$x, tilenum$y),
       response = resp
     ),
     class = "mapbox_vector_tile"

@@ -16,11 +16,14 @@ Imports:
     httr,
     utils,
     glue,
-    slippymath (>= 0.2.0)
+    slippymath (>= 0.2.0),
+    lwgeom,
+    rlang
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
     rmarkdown,
     sf,
-    tidyverse
+    tidyverse,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr

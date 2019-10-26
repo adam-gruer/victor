@@ -29,11 +29,21 @@ spoils <- function(tileset_id = "mapbox.mapbox-streets-v8",
                    latitude = 0,
                    crs = 4326) {
   # TODO convert long and lat in non degrees to degrees st_transform?
-  tile_coords <- slippymath::lonlat_to_tilenum(longitude, latitude, zoom)
-  x <- tile_coords$x
-  y <- tile_coords$y
-  vector_tile <- mapbox_api(tileset_id, zoom, x, y)$content
-  protolite::read_mvt_sf(vector_tile, crs = crs, c(zoom, x, y))
+  tilenum <- slippymath::lonlat_to_tilenum(longitude, latitude, zoom)
+  tilenum$zoom <- zoom
+
+  vector_tile <- mapbox_api(tileset_id, tilenum)$content
+  vector_tile <- protolite::read_mvt_sf(vector_tile,
+                                                   crs = crs,
+                                                   zxy = c(tilenum$zoom,
+                                                         tilenum$x,
+                                                         tilenum$y))
+
+  if(is_anti_meridian_tile(tilenum)){
+    purrr::map(vector_tile, lon_wrap_180)
+  } else {
+    vector_tile
+  }
 }
 
 
