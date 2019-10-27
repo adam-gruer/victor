@@ -53,6 +53,7 @@ layer_fields <- function(tile, layers) {
 }
 
 bind_tiles_layer <- function(tile_a_layer, tile_b_layer = NULL){
+  if(is.null(tile_a_layer)) return(tile_b_layer)
   if(is.null(tile_b_layer)) return(tile_a_layer)
   fields_a <- names(tile_a_layer)
   fields_b <- names(tile_b_layer)
