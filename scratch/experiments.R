@@ -326,17 +326,9 @@ tilenum <- list(x = 14,
                 y = 9,
                 zoom = 4)
 
-ncol <- 3
-nrow <- 3
-ncol <- 3
-# 1 row
-shape <- function(tilenum, ncol, nrow ){
-x <- tilenum$x + 0:(ncol-1)
-y <- tilenum$y + 0:(nrow-1)
+melb <- spoils(144.962025,-37.817107, 15, 2, 2)
 
-cbind(x = rep(x, each = nrow), y) - 1
-}
-shape(tilenum, ncol, nrow)
+
 
 
 
