@@ -323,6 +323,9 @@ ggplot() +
           colour = NA)
 
 
+melb <- spoils(144.962025,-37.817107, 15, 2, 2)
+
+mapbox_api("mapbox.mapbox-streets-v8", list(15,29577, 20106))
 
 
 
