@@ -75,8 +75,8 @@ tile_list <- function(tilenum, ncol, nrow ){
 
   if(ncol == 1 && nrow == 1) return(tilenum)
 
-  x <- rep(tilenum$x + 0:(ncol-1), each = nrow) - 1
-  y <- rep(tilenum$y + 0:(nrow-1), times = ncol) - 1
+  x <- rep(tilenum$x + 0:(ncol-1), each = nrow) - round(median(1:ncol),0)
+  y <- rep(tilenum$y + 0:(nrow-1), times = ncol) - round(median(1:nrow),0)
   purrr::map2(x, y,
               function(x, y, zoom){
                 list(x = x, y = y, zoom = tilenum$zoom)
