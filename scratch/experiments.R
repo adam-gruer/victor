@@ -458,3 +458,92 @@ ggplot() +
   theme_vapour
 levels(melb_cbd$road$)
 filter(melb_cbd$road, name == "Elizabeth St")
+
+ggplot() +
+  geom_sf(data = melb$water, fill) +
+  geom
+
+
+
+purrr::map(melb, "waterway") %>% purrr::map(st_crs)
+
+ggplot() + geom_sf(data = melb_w)
+
+layer_names <- union_tile_layers(melb)
+layer_names
+
+
+layers2 <- purrr::map(layer_names, function(layer_name){
+
+  purrr::map(melb[10], layer_name) %>%
+   purrr::reduce(bind_tiles_layer)
+
+})
+layers[[12]] %>%
+  purrr::reduce(bind_tiles_layer)
+bind_tiles_layer(layers[[12]][[1]], layers[[12]][[2]] )
+
+
+melb <- spoils(144.932343,-37.829379, 11, 3, 3)
+
+theme_vapour <-   theme_void() +
+  theme( panel.grid.major = element_line(size = 0),
+         plot.background = element_rect(fill = "#9239F6"),
+         legend.position = "none")
+
+ggplot() +
+  geom_sf(data =melb$water, fill = "#FF0076", colour = NA) +
+  geom_sf(data = dplyr::filter(melb$road,class == "major_rail"), colour = "yellow") +
+  theme_vapour
+levels(melb$road$class)
+
+melb$landuse
+
+library(skimr)
+skim(melb$road)
+View(st_drop_geometry(melb$road))
+
+oceanis <- spoils(sydney$longitude, sydney$latitude, zoom = 15, 2,2)
+ggplot() +
+  geom_sf(data = oceanis$water,  fill = "#FF0076", colour = NA ) +
+  geom_sf(data = oceanis$road) +
+  geom_sf_text(data = filter(oceanis$poi_label,filterrank == 1), aes(label = name)) +
+  geom_sf_text(data = oceanis$place_label %>%
+                         st_join(st_bbox(oceanis$water) %>%
+                           st_as_sfc() %>%
+                            st_sf(), left = FALSE)
+                 , aes(label = name)) +
+  theme_vapour
+
+purrr::map(oceanis, st_bbox) %>%
+  purrr::map(st_as_sfc) %>%
+  purrr::map(st_sf) %>%
+  purrr::imap(function(bbox, layer){
+    bbox$layer <- layer
+    bbox}
+    ) %>%
+  purrr::reduce(rbind) %>%
+  ggplot() + geom_sf(aes(colour = layer), fill = NA)
+
+
+melb_cbd <- spoils(144.965201,-37.820468, 15, 3,3)
+levels(melb_cbd$road$class)
+ggplot() +
+
+  geom_sf(data = melb_cbd$landuse ,aes(fill=class)) +
+  geom_sf(data = melb_cbd$building ,aes(fill=type)) +
+  geom_sf(data = melb_cbd$road %>%
+            dplyr::filter(class %in% c(#"tertiary",
+                                       #"secondary",
+                                       #"primary",
+                                       #"trunk",
+                                       #"motorway",
+                                       "major_rail",
+                                       "minor_rail",
+                                       "service_rail")),
+          aes(colour = class)) +
+  geom_sf(data = melb_cbd$water, fill = "#FF0076", colour = NA ) +
+
+  theme_vapour
+levels(melb_cbd$road$)
+filter(melb_cbd$road, name == "Elizabeth St")
