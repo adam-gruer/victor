@@ -73,7 +73,7 @@ spoils <- function(longitude = 0,
 
 tile_list <- function(tilenum, ncol, nrow ){
 
-  if(ncol == 1 && nrow == 1) return(tilenum)
+  if(ncol == 1 && nrow == 1) return(list(tilenum))
 
   x <- rep(tilenum$x + 0:(ncol-1), each = nrow) - round(median(1:ncol),0)
   y <- rep(tilenum$y + 0:(nrow-1), times = ncol) - round(median(1:nrow),0)
