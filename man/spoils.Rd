@@ -4,25 +4,29 @@
 \alias{spoils}
 \title{To the victor go the spoils.}
 \usage{
-spoils(tileset_id = "mapbox.mapbox-streets-v8", zoom = 1,
-  longitude = 0, latitude = 0, crs = 4326)
+spoils(longitude = 0, latitude = 0, zoom = 1, nrow = 1, ncol = 1,
+  crs = 4326, tileset_id = "mapbox.mapbox-streets-v8")
 }
 \arguments{
-\item{tileset_id}{character a standard mapbox or custom tileset}
-
-\item{zoom}{integer the zoom level for the request tile
-in the
-\href{https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames}{Slippy Map Tilenames}
-specification. 1 = the world, 18 is on top of your house}
-
 \item{longitude}{numeric left most point ( I think?) of tile in degrees.
 TODO accept projection native coords}
 
 \item{latitude}{numeric top most point ( I think?) of tile in degrees.
 TODO accept projection native coords}
 
+\item{zoom}{integer the zoom level for the request tile
+in the
+\href{https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames}{Slippy Map Tilenames}
+specification. 1 = the world, 18 is on top of your house}
+
 \item{crs}{the EPSG code for the coordinate reference system of your supplied
 longitude and latitude. The returned simple features will be in the same crs}
+
+\item{tileset_id}{character a standard mapbox or custom tileset}
+
+\item{nrows}{integer how many rows of tiles}
+
+\item{ncols}{integer how many coumns of tiles}
 }
 \value{
 a list of simple feature data frames ,
