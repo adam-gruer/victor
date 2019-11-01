@@ -328,4 +328,31 @@ melb <- spoils(144.962025,-37.817107, 15, 2, 2)
 mapbox_api("mapbox.mapbox-streets-v8", list(15,29577, 20106))
 
 
+  melb_cbd_coords = list(lon = 144.962814, lat = -37.813486)
+
+melb_cbd <- victor::spoils(melb_cbd_coords$lon,
+                           melb_cbd_coords$lat,
+                           zoom = 15,
+                           nrow = 10,
+                           ncol = 10
+)
+melb <- st_sfc(st_point(x = c(melb_cbd_coords$lon, melb_cbd_coords$lat)), crs = 4326)
+
+ggplot() +
+
+  geom_sf(data = melb) +
+  geom_sf(
+    data = filter(
+      melb_cbd$road,
+      class %in% c(
+        "major_rail",
+        "minor_rail"
+      )
+    ),
+    aes(colour = type), fill = NA
+  ) +
+
+  labs(title = "Rail Melbourne CBD",
+       caption = "© Mapbox© OpenStreetMap") +
+  theme_void()
 
