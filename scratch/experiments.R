@@ -346,8 +346,8 @@ shape(tilenum, ncol, nrow)
 melb_cbd <- victor::spoils(melb_cbd_coords$lon,
                            melb_cbd_coords$lat,
                            zoom = 15,
-                           nrow = 10,
-                           ncol = 10
+                           nrow = 15,
+                           ncol = 15
 )
 melb <- st_sfc(st_point(x = c(melb_cbd_coords$lon, melb_cbd_coords$lat)), crs = 4326)
 
@@ -362,12 +362,13 @@ ggplot() +
         "minor_rail"
       )
     ),
-    aes(colour = type), fill = NA
+    aes(colour = type), show.legend = "line"
   ) +
 
   labs(title = "Rail Melbourne CBD",
        caption = "© Mapbox© OpenStreetMap") +
-  theme_void()
+  theme_void() +
+  guides(color=guide_legend(title = NULL))
 
 
 ggplot() +
